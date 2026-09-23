@@ -60,7 +60,7 @@
         break;
       case 'steps':
         body = head(s, id) + '<ol class="steps">' + (s.steps || []).map(function (x, k) {
-          return '<li><span class="num" aria-hidden="true">' + (k + 1) + '</span><div><strong>' + t(x.h) + '</strong>' +
+          return '<li><span class="num" aria-hidden="true">' + (k + (s.start || 1)) + '</span><div><strong>' + t(x.h) + '</strong>' +
             (x.p ? '<span>' + t(x.p) + '</span>' : '') + '</div></li>';
         }).join('') + '</ol>';
         break;
@@ -127,7 +127,7 @@
           '><summary>Presenter notes, slide ' + (i + 1) + '</summary><p>' + t(s.notes) + '</p></details>' : '');
       }).join('') + '</div>' +
       '<footer class="pagefoot"><p>' + t(data.about || 'Planned and built live by the people in the room, with Claude doing the typing. Nothing was prepared in advance except the design template.') +
-      '</p><p>Made by <a href="https://pathableai.com">PathAble AI</a>.</p></footer>';
+      '</p><p><a href="https://github.com/PathAbleAI/star-live/blob/main/CLAUDE.md">See exactly what Claude was told</a>. Made by <a href="https://pathableai.com">PathAble AI</a>.</p></footer>';
     window.scrollTo(0, y);
   }
 

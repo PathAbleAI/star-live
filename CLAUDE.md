@@ -22,22 +22,24 @@ These are the complete instructions Claude follows during this session. Nothing 
 ## The run (Burt tells you which step we are on)
 
 **Step 0. "Kick off."**
-Update `docs/decks/live.js`: keep `status: "building"`, set `statusText` to "Our volunteers are meeting now" and `progress` to `["Session started"]`. Run `node publish.mjs`. Tell Burt the public page is updated.
+Update `docs/decks/live.js`: keep `status: "building"`, set `statusText` to "Our volunteers are meeting now" and `progress` to `["Session started"]`. Run `node publish.mjs --no-wait`. Tell Burt in one line that the public page is updating.
 
 **Step 1. "The transcript is saved."**
-1. Read the newest `star-transcript*.txt` in the Downloads folder (`~/Downloads`). Copy it to `transcripts/meeting.txt`.
+**Speed matters here: the room is waiting.** Show the plan first. Status updates come after.
+
+1. Read the newest `star-transcript*.txt` in the Downloads folder (`~/Downloads`).
 2. Show the plan **in the chat, not in a file**, in this shape:
    - **Our goal** (one sentence, in the group's words)
    - **What we heard** (3 to 5 bullets)
    - **The plan** (5 to 7 numbered steps, one line each)
    - **Open questions** (1 to 3)
-3. Update `live.js` progress to add "Meeting done", `statusText` "Reviewing the plan together". Run `node publish.mjs`.
+3. Only after the plan is on screen: save the transcript text to `transcripts/meeting.txt` (write it with the Write tool; do not use a copy command), update `live.js` progress to add "Meeting done", `statusText` "Reviewing the plan together", and run `node publish.mjs --no-wait`.
 
 **Step 2. Feedback.**
 Burt and the volunteers react. Revise and show only the updated plan. Point out in one line what changed. Aim for two rounds. If a volunteer rejects something, thank them for it: that moment is the lesson.
 
 **Step 3. "Approved. Build it."**
-1. First, add "Plan approved" to progress, `statusText` "Building the slides now". Run `node publish.mjs`.
+1. First, add "Plan approved" to progress, `statusText` "Building the slides now". Run `node publish.mjs --no-wait`.
 2. Write the full 10-slide deck into `docs/decks/live.js` (format below). Remove the `status` field.
 3. Run `node publish.mjs --check` and fix anything it flags. Then run `node open.mjs` so Burt can check the deck on the laptop.
 4. Run `node publish.mjs` and report the result in one line.
@@ -67,7 +69,7 @@ DECK({
     { "layout": "title", "kicker": "Built live at STAR 2026", "title": "…", "subtitle": "…", "notes": "…" },
     { "layout": "big", "kicker": "…", "title": "…", "big": "≤5 words", "caption": "…", "notes": "…" },
     { "layout": "bullets", "kicker": "…", "title": "…", "bullets": ["≤5 items, ≤14 words each"], "notes": "…" },
-    { "layout": "steps", "kicker": "…", "title": "…", "steps": [{ "h": "≤8 words", "p": "≤16 words" }], "notes": "…" },
+    { "layout": "steps", "kicker": "…", "title": "…", "start": 1, "steps": [{ "h": "≤8 words", "p": "≤16 words" }], "notes": "…" },
     { "layout": "split", "kicker": "…", "title": "…", "left": { "h": "…", "items": ["≤4"] }, "right": { "h": "…", "items": ["≤4"] }, "notes": "…" },
     { "layout": "quote", "title": "…", "quote": "…", "by": "One of our volunteers", "notes": "…" },
     { "layout": "qr", "kicker": "…", "title": "…", "caption": "…", "notes": "…" }
@@ -75,13 +77,14 @@ DECK({
 })
 ```
 
-Titles 9 words or fewer. `**bold**` works inside text. Nothing else does.
+Titles 9 words or fewer. `**bold**` works inside text. Nothing else does. On a `steps` slide that continues the plan, set `start` so the numbers match the plan (for example `"start": 6`).
 
 ## Commands
 
 | Command | What it does |
 |---|---|
 | `node publish.mjs` | Checks the live deck, uploads it, waits until the public link shows it |
+| `node publish.mjs --no-wait` | Uploads without waiting (for status updates) |
 | `node publish.mjs --check` | Checks only |
 | `node open.mjs` | Opens the live deck full screen on this laptop |
 | `node open.mjs closing` | Opens Burt's closing deck |

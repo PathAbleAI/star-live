@@ -2,6 +2,7 @@
 //   node publish.mjs            -> checks and publishes docs/decks/live.js
 //   node publish.mjs closing    -> another deck
 //   node publish.mjs --check    -> checks only, publishes nothing
+//   node publish.mjs --no-wait  -> uploads and returns right away (for quick status updates)
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -11,6 +12,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://pathableai.github.io/star-live/';
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
+const noWait = args.includes('--no-wait');
 const deck = (args.find(a => !a.startsWith('--')) || 'live').replace(/[^a-z0-9-]/gi, '');
 const file = join(ROOT, 'docs', 'decks', deck + '.js');
 
@@ -85,6 +87,10 @@ try {
   console.error('✖ Could not push to GitHub. Check the internet connection.\n' + (e.stderr || e.message));
   console.error('The deck still works on this laptop. Present from the local file.');
   process.exit(1);
+}
+if (noWait) {
+  console.log('✔ Sent. Phones will pick it up within about a minute.');
+  process.exit(0);
 }
 console.log('✔ Sent to GitHub. Waiting for the public link to update…');
 
