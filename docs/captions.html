@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Captions | PathAble AI</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>
+  /* Live captions for the room + transcript capture for Claude.
+     Uses the browser's speech recognition (Edge or Chrome, needs internet). */
+  :root{--navy:#00365c;--teal:#4ecdc4;--ink:#fff;--dim:#b9ccd8;--bg:#021f35;--panel:#0a2c47}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,Arial,sans-serif;display:flex;flex-direction:column;height:100vh}
+  header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;background:var(--navy)}
+  header img{height:36px}
+  header .grow{flex:1}
+  button{font:inherit;font-weight:700;border:0;border-radius:6px;padding:9px 14px;cursor:pointer;background:#e6f2f5;color:var(--navy)}
+  button.go{background:var(--teal);color:var(--navy)}
+  button.stop{background:#ffb4a8;color:#4a0d05}
+  button.who[aria-pressed="true"]{background:var(--teal)}
+  :focus-visible{outline:3px solid #fff;outline-offset:2px}
+  #state{font-weight:700;color:var(--dim);min-width:12ch}
+  #state.on{color:var(--teal)}
+  main{flex:1;overflow:auto;padding:16px 24px 8px;font-size:var(--fs,34px);line-height:1.35}
+  .line{margin:0 0 .4em}
+  .line .t{color:var(--dim);font-size:.45em;margin-right:.6em;vertical-align:middle}
+  .line .who{color:var(--teal);font-weight:700;margin-right:.3em}
+  #interim{color:var(--dim);font-style:italic}
+  footer{padding:8px 16px;color:var(--dim);font-size:14px;background:var(--panel)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header>
+  <img src="assets/logo-white.svg" alt="PathAble AI">
+  <span id="state" role="status">Stopped</span>
+  <button id="toggle" class="go">Start listening</button>
+  <span class="grow"></span>
+  <span aria-hidden="true">Speaker:</span>
+  <div role="group" aria-label="Who is speaking" id="whos"></div>
+  <button id="smaller" aria-label="Smaller text">A−</button>
+  <button id="bigger" aria-label="Bigger text">A+</button>
+  <button id="save">Save for Claude</button>
+  <button id="copy">Copy</button>
+  <button id="clear">Clear</button>
+</header>
+<main id="out" aria-live="off"><p class="line" id="interim"></p></main>
+<footer id="foot">Click Start listening, allow the microphone, and talk. "Save for Claude" downloads star-transcript.txt to your Downloads folder.</footer>
+<script>
+(function () {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var out = document.getElementById('out'), interimEl = document.getElementById('interim');
+  var stateEl = document.getElementById('state'), toggle = document.getElementById('toggle'), foot = document.getElementById('foot');
+  var KEY = 'star-transcript-v1';
+  var lines = [], listening = false, rec = null, speaker = '', fs = 34;
+
+  try { lines = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { lines = []; }
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(lines)); } catch (e) {} }
+
+  // Speaker tags are optional; they make the transcript easier for Claude to follow.
+  ['Burt', 'Guest 1', 'Guest 2', 'Guest 3'].forEach(function (name) {
+    var b = document.createElement('button');
+    b.className = 'who'; b.textContent = name; b.setAttribute('aria-pressed', 'false');
+    b.onclick = function () {
+      speaker = speaker === name ? '' : name;
+      document.querySelectorAll('.who').forEach(function (x) { x.setAttribute('aria-pressed', String(x.textContent === speaker)); });
+    };
+    document.getElementById('whos').appendChild(b);
+  });
+
+  function stamp(d) { return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+  function addLineEl(l) {
+    var p = document.createElement('p'); p.className = 'line';
+    var t = document.createElement('span'); t.className = 't'; t.textContent = l.time; p.appendChild(t);
+    if (l.who) { var w = document.createElement('span'); w.className = 'who'; w.textContent = l.who + ':'; p.appendChild(w); }
+    p.appendChild(document.createTextNode(l.text));
+    out.insertBefore(p, interimEl);
+  }
+  lines.forEach(addLineEl);
+  function scrollEnd() { out.scrollTop = out.scrollHeight; }
+  scrollEnd();
+
+  function setState(on, msg) {
+    stateEl.textContent = msg || (on ? 'Listening' : 'Stopped');
+    stateEl.classList.toggle('on', on);
+    toggle.textContent = on ? 'Stop listening' : 'Start listening';
+    toggle.className = on ? 'stop' : 'go';
+  }
+
+  if (!SR) {
+    toggle.disabled = true;
+    setState(false, 'Not supported');
+    foot.textContent = 'This browser has no speech recognition. Open this page in Microsoft Edge or Google Chrome.';
+  } else {
+    rec = new SR();
+    rec.lang = 'en-US'; rec.continuous = true; rec.interimResults = true;
+    rec.onresult = function (e) {
+      var interim = '';
+      for (var i = e.resultIndex; i < e.results.length; i++) {
+        var r = e.results[i];
+        if (r.isFinal) {
+          var text = r[0].transcript.trim();
+          if (text) { var l = { time: stamp(new Date()), who: speaker, text: text }; lines.push(l); addLineEl(l); persist(); }
+        } else interim += r[0].transcript;
+      }
+      interimEl.textContent = interim;
+      scrollEnd();
+    };
+    rec.onerror = function (e) {
+      if (e.error === 'no-speech' || e.error === 'aborted') return;
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { listening = false; setState(false, 'Mic blocked'); foot.textContent = 'The microphone is blocked. Click the lock icon in the address bar and allow the microphone.'; }
+      else if (e.error === 'network') foot.textContent = 'Speech recognition needs internet. Check Wi-Fi or the hotspot. Retrying…';
+      else foot.textContent = 'Recognition error: ' + e.error + '. Retrying…';
+    };
+    // Browsers end recognition after silence; restart it while we are meant to be listening.
+    rec.onend = function () {
+      if (listening) { try { rec.start(); } catch (err) { setTimeout(function () { if (listening) try { rec.start(); } catch (e2) {} }, 400); } }
+      else setState(false);
+    };
+    toggle.onclick = function () {
+      listening = !listening;
+      if (listening) { try { rec.start(); } catch (e) {} setState(true); }
+      else { rec.stop(); interimEl.textContent = ''; setState(false); }
+    };
+  }
+
+  function asText() {
+    return 'STAR 2026 live meeting transcript\n' + new Date().toString() + '\n\n' +
+      lines.map(function (l) { return '[' + l.time + '] ' + (l.who ? l.who + ': ' : '') + l.text; }).join('\n') + '\n';
+  }
+  document.getElementById('save').onclick = function () {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([asText()], { type: 'text/plain' }));
+    a.download = 'star-transcript.txt'; document.body.appendChild(a); a.click(); a.remove();
+    foot.textContent = 'Saved ' + lines.length + ' lines to Downloads as star-transcript.txt. Tell Claude: "The transcript is saved."';
+  };
+  document.getElementById('copy').onclick = function () {
+    navigator.clipboard.writeText(asText()).then(function () { foot.textContent = 'Copied ' + lines.length + ' lines.'; });
+  };
+  document.getElementById('clear').onclick = function () {
+    if (!confirm('Clear the whole transcript? This cannot be undone.')) return;
+    lines = []; persist(); out.querySelectorAll('.line:not(#interim)').forEach(function (p) { p.remove(); });
+  };
+  function size(d) { fs = Math.max(20, Math.min(72, fs + d)); document.documentElement.style.setProperty('--fs', fs + 'px'); }
+  document.getElementById('bigger').onclick = function () { size(4); };
+  document.getElementById('smaller').onclick = function () { size(-4); };
+})();
+</script>
+</body>
+</html>

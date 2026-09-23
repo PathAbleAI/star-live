@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(~/Downloads/**)",
+      "Bash(node publish.mjs*)",
+      "Bash(node open.mjs*)",
+      "Bash(node reset.mjs*)",
+      "Bash(ls*)",
+      "Bash(git status*)",
+      "PowerShell(node publish.mjs*)",
+      "PowerShell(node open.mjs*)",
+      "PowerShell(node reset.mjs*)",
+      "PowerShell(Get-ChildItem*)"
+    ]
+  },
+  "disableClaudeAiConnectors": true,
+  "autoMemoryEnabled": false,
+  "spinnerTipsEnabled": false,
+  "prefersReducedMotion": true,
+  "showTurnDuration": false
+}

@@ -1,0 +1,5 @@
+# Meeting transcripts contain volunteers' words. They never leave the laptop.
+transcripts/
+*.txt
+.claude/settings.local.json
+node_modules/
