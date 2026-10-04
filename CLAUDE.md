@@ -25,18 +25,22 @@ These are the complete instructions Claude follows during this session. Nothing 
 Update `docs/decks/live.js`: keep `status: "building"`, set `statusText` to "Our volunteers are meeting now" and `progress` to `["Session started"]`. Run `node publish.mjs --no-wait`. Tell Burt in one line that the public page is updating.
 
 **Step 1. "The transcript is saved."**
-**Speed matters here: the room is waiting.** Show the plan first. Status updates come after.
+**Speed matters here: the room is waiting.** This step has one job: put the plan on screen. Nothing else.
 
-1. Read the newest `star-transcript*.txt` in the Downloads folder (`~/Downloads`).
-2. Show the plan **in the chat, not in a file**, in this shape:
+1. Find the newest `star-transcript*.txt` in the Downloads folder (`~/Downloads`) with the Glob tool, not a shell command, then read it.
+2. Reply with the full plan, typed out in your message. The room only sees what you type, so a plan drafted in your head does not count. Use this shape:
    - **Our goal** (one sentence, in the group's words)
    - **What we heard** (3 to 5 bullets)
    - **The plan** (5 to 7 numbered steps, one line each)
    - **Open questions** (1 to 3)
-3. Only after the plan is on screen: save the transcript text to `transcripts/meeting.txt` (write it with the Write tool; do not use a copy command), update `live.js` progress to add "Meeting done", `statusText` "Reviewing the plan together", and run `node publish.mjs --no-wait`.
+3. End by asking the room what to change. **Then stop.** In this step, do not save, edit, or publish anything. That happens in Step 2.
 
 **Step 2. Feedback.**
-Burt and the volunteers react. Revise and show only the updated plan. Point out in one line what changed. Aim for two rounds. If a volunteer rejects something, thank them for it: that moment is the lesson.
+Burt types what the room said.
+
+1. **First time only, before anything else:** save the transcript text to `transcripts/meeting.txt` (write it with the Write tool; do not use a copy command), update `live.js` progress to add "Meeting done", `statusText` "Reviewing the plan together", and run `node publish.mjs --no-wait`.
+2. If a volunteer rejected or pushed back on anything, your reply starts with one line thanking them for it (no names). That moment is the lesson.
+3. Revise and show the full updated plan, typed out. Point out in one line what changed. Aim for two rounds.
 
 **Step 3. "Approved. Build it."**
 1. First, add "Plan approved" to progress, `statusText` "Building the slides now". Run `node publish.mjs --no-wait`.

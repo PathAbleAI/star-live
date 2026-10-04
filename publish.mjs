@@ -79,12 +79,22 @@ if (checkOnly) process.exit(0);
 
 // 4. Push to GitHub. Transcripts are git-ignored and never leave this computer.
 const git = (...a) => execFileSync('git', a, { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+// Same identity setup.ps1 sets, in case setup was skipped on this copy.
+const has = key => { try { return !!git('config', key); } catch { return false; } };
+if (!has('user.name')) git('config', 'user.name', 'PathAble AI');
+if (!has('user.email')) git('config', 'user.email', 'PathAbleAI@users.noreply.github.com');
 try {
   git('add', 'docs');
   if (git('diff', '--cached', '--name-only')) git('commit', '-m', `Publish ${deck}: ${data.title}`);
   git('push', '-q', 'origin', 'HEAD');
 } catch (e) {
-  console.error('✖ Could not push to GitHub. Check the internet connection.\n' + (e.stderr || e.message));
+  const err = String(e.stderr || e.message);
+  const offline = /could not resolve host|unable to access|timed out|connection (refused|reset)|network/i.test(err);
+  const signedOut = /authentication|permission denied|403|401|could not read username/i.test(err);
+  console.error('✖ Could not upload to GitHub. ' + (offline ? 'This laptop is not reaching the internet. Check the hotspot.'
+    : signedOut ? 'GitHub sign-in has expired. In a separate window, type:  gh auth login'
+    : 'Git reported a problem (details below).'));
+  console.error(err.trim());
   console.error('The deck still works on this laptop. Present from the local file.');
   process.exit(1);
 }
