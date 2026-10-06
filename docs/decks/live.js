@@ -45,38 +45,38 @@ DECK({
       "title": "First, get safe and get clear",
       "start": 1,
       "steps": [
-        { "h": "Start with the fear", "p": "Say it out loud. Then name what only a person can do." },
-        { "h": "Make our policy a plain checklist", "p": "What never goes into AI, in words anyone can follow. Source: HIPAA guidance." },
-        { "h": "Get approved tools in writing", "p": "Ask leadership which tools are okay for client work. Then use only those." }
+        { "h": "Name what only you can do", "p": "Write one task you'd hand off, and one only a person can do." },
+        { "h": "Make a one-page never list", "p": "Write what never goes into AI. Tape it by your screen. Source: HIPAA guidance." },
+        { "h": "Ask your supervisor, in writing", "p": "Email: \"Which AI tools are we allowed to use, and for what?\"" }
       ],
-      "notes": "So the plan starts with safety, not with tools. Step one, talk about the fear. Step two came from a volunteer who said our policy exists, but it's so unclear they just avoid AI. So turn it into a plain checklist. Step three, ask leadership which tools are approved, and get it in writing. HIPAA has no exception for AI. If your agency is covered by HIPAA, client information only goes into tools with a signed business associate agreement. Sources: medcurity.com/hipaa-compliance-generative-ai and hollandhart.com."
+      "notes": "So the plan starts with safety, and every step is something you can do this week. Step one, grab a sticky note. Write one task you'd happily hand off, and one only a person can do. Step two, make a one-page never list and tape it by your screen. Step three, send your supervisor one email asking which tools are allowed. HIPAA has no exception for AI. Sources: medcurity.com/hipaa-compliance-generative-ai and hollandhart.com."
     },
     {
       "layout": "split",
       "kicker": "Steps 2 and 4 · Source: HIPAA identifier list, medcurity.com",
-      "title": "What stays out, what's safe to try",
+      "title": "Type this, not that",
       "left": {
-        "h": "Never put into AI",
-        "items": ["Names and addresses", "Birthdates and other personal dates", "Medicaid or medical record numbers", "Photos of faces"]
+        "h": "Don't type",
+        "items": ["\"Write a progress note for Maria L., born 3/4/91...\"", "A client's name or address", "A Medicaid or medical record number", "Photos of faces"]
       },
       "right": {
-        "h": "Safe to practice on",
-        "items": ["A general email to staff", "A training handout", "Practice interview questions", "A summary of a public article"]
+        "h": "Do type",
+        "items": ["\"Write a progress note template with blanks for goals and next steps.\"", "\"A job seeker\" instead of a name", "\"The person I support\" instead of details", "Made-up examples, not real ones"]
       },
-      "notes": "So here's the simple version of that checklist. On the left, a few of the identifiers HIPAA lists. There are eighteen in all, so check the full list with your compliance person. If it can point to a real person, it stays out. On the right, things you can practice on today with zero client risk. And that's how you get comfortable. Start with the boring stuff. Full links: medcurity.com/hipaa-compliance-generative-ai and hollandhart.com/ai-chatbots-and-hipaa-what-healthcare-providers-need-to-know-1."
+      "notes": "So this is the slide to photograph. Maria is made up, by the way. On the left, the kind of thing people type without thinking. Names, birthdates, Medicaid numbers. HIPAA lists eighteen identifiers like these, so check the full list with your compliance person. On the right, the same request done safely. Ask for the template, not the note. Say a job seeker, not a name. You still get the help. Links: medcurity.com/hipaa-compliance-generative-ai and hollandhart.com/ai-chatbots-and-hipaa-what-healthcare-providers-need-to-know-1."
     },
     {
       "layout": "steps",
       "kicker": "The plan, part two",
-      "title": "Then practice, check, and build job skills",
+      "title": "Four things to try tomorrow",
       "start": 4,
       "steps": [
-        { "h": "Practice on safe, simple tasks", "p": "Emails, handouts, meeting notes. No client details, ever." },
-        { "h": "Check everything the AI says", "p": "Ask for its sources. Then open the links and look yourself." },
-        { "h": "Build job skills with our people", "p": "Practice AI for job searches and interviews. Source: World Economic Forum." },
-        { "h": "Teach a teammate, keep humans deciding", "p": "Share what worked. A person makes every final call." }
+        { "h": "Practice on a staff email", "p": "Try: \"Rewrite this email so it's shorter and friendlier.\"" },
+        { "h": "Make it show its work", "p": "Try: \"Where did you get that? Give me links.\" Then click every link." },
+        { "h": "Decode job postings together", "p": "Try: \"Turn this posting into a plain-language list of what the job needs.\"" },
+        { "h": "Practice interviews, one question at a time", "p": "Try: \"Ask me 5 questions for a stocking job. Give feedback after each.\"" }
       ],
-      "notes": "So once you're safe, you practice. Small, boring tasks first. Then step five, and our volunteers were firm on this: check the AI's work. Ask it for sources and actually click them. That's what we did today. Step six is the one this room chose as the priority, getting a job. The people we support will be applying to employers who want AI skills, so practice job searches and interviews with them. And step seven, a person always makes the final call."
+      "notes": "So these are word for word. Copy them. Step four, start with a staff email, because nobody gets hurt if it's clunky. Step five, our volunteers were firm on this: make it show its work, then click the links yourself. Steps six and seven are for the people we support, because this room picked getting a job as the priority. Decode the posting together. Practice the interview. And you read the feedback with them, because a person makes the final call."
     },
     {
       "layout": "bullets",
@@ -98,12 +98,12 @@ DECK({
       "start": 1,
       "steps": [
         { "h": "Start with their fear, not the tool", "p": "Ask what worries them. Listen first. It's usually the same worry we heard." },
-        { "h": "Hand them the checklist first", "p": "Safety before skills. What stays out of AI, every time." },
-        { "h": "Do one safe task side by side", "p": "Pick something boring, like an email. Let them type." },
-        { "h": "Check the answer together", "p": "Open the sources. Talk about what's right and what's off." },
-        { "h": "Have them teach the next person", "p": "You learn it for real the first time you teach it." }
+        { "h": "Hand them the never list first", "p": "Safety before skills. Tape a copy by their screen too." },
+        { "h": "Book 15 minutes, side by side", "p": "Pick one safe task, like a staff email. Let them type." },
+        { "h": "Check the answer together", "p": "Ask for links. Click them. Talk about what's right and what's off." },
+        { "h": "Swap seats and teach it back", "p": "They type, you watch. Then they teach the next person." }
       ],
-      "notes": "And this is how you take it home. You don't need to be tech savvy to do this. One of our volunteers worried about exactly that. So start with their fear, because that's where we started. Hand them the checklist. Sit next to them and do one boring task, and let them drive. Check the answer together. Then have them teach the next person. That's it. And honestly, that's how most of us learned anything worth knowing in this field."
+      "notes": "And this is how you take it home. You don't need to be tech savvy. One of our volunteers worried about exactly that. So start with their fear. Hand them the never list. Then book fifteen minutes. Not an all-day training, fifteen minutes. Sit side by side, pick one safe task, and let them type. Check the answer together and click the links. Then swap seats. And once they can teach it to the next person, you've done your job."
     },
     {
       "layout": "qr",
